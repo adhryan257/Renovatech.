@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo - Renovatech</title>
+  <link rel="stylesheet" href="style.css">
+<style type="text/css" id="dcoder_stylesheet">/* Estilos Gerais */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #2b2e4a;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+h2 {
+  color: #2b2e4a;
+}
+
+/* Estilos da Seção de Produtos */
+#produtos {
+  padding: 20px;
+}
+
+.produtos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.produto {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.produto img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Estilos de Login */
+#login, #cadastro {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#login input, #cadastro input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#login button, #cadastro button {
+  background-color: #2b2e4a;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#login button:hover, #cadastro button:hover {
+  background-color: #4a4e69;
+}
+
+/* Estilos de Pagamento */
+#pagamento {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#pagamento-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#pagamento-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Estilos do Painel Administrativo */
+#painel-admin {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+#pedidos table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#pedidos th, #pedidos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#pedidos th {
+  background-color: #2c3e50;
+  color: white;
+}
+
+#pedidos button {
+  background-color: #27ae60;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#pedidos button:hover {
+  background-color: #2ecc71;
+}
+
+@media (max-width: 768px) {
+  .produtos-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .produto {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  form, #pagamento, #login, #cadastro {
+    width: 100%;
+    padding: 10px;
+  }
+
+  #finalizar-compra, #pagamento-btn {
+    width: 100%;
+  }
+}</style></head>
+<body>
+  <header>
+    <h1>Painel Administrativo</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Página Inicial</a></li>
+        <li><a href="login.html">Sair</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="painel-admin">
+    <h2>Pedidos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>E-mail</th>
+          <th>Produtos</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="lista-pedidos">
+        <!-- Pedidos carregados dinamicamente -->
+      </tbody>
+    </table>
+  </section>
+
+  <script src="script.js"></script>
+
+<script type="text/javascript" id="dcoder_script">// Carrinho de compras
+let carrinho = [];
+let total = 0;
+
+// Função para adicionar produtos ao carrinho
+function adicionarAoCarrinho(produto, preco) {
+  carrinho.push({ produto, preco });
+  total += preco;
+  alert(`${produto} foi adicionado ao carrinho. Total: R$ ${total}`);
+}
+
+// Função para processar pagamento
+function processarPagamento() {
+  if (carrinho.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
+  const totalPagamento = total * 100; // Converte para centavos (usado em APIs de pagamento)
+  const urlPagamento = `https://www.mercadopago.com.br/checkout/v1/redirect?amount=${totalPagamento}&currency_id=BRL`;
+
+  window.open(urlPagamento, "_blank");
+}
+
+// Função para validar login
+document.getElementById('login-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email-login').value;
+  const senha = document.getElementById('senha-login').value;
+
+  if (email === 'cliente@teste.com' && senha === '12345') {
+    alert('Login bem-sucedido!');
+  } else {
+    alert('E-mail ou senha inválidos!');
+  }
+});
+
+// Função para carregar pedidos no painel administrativo
+async function carregarPedidos() {
+  const response = await fetch("http://localhost:5000/api/orders");
+  const pedidos = await response.json();
+
+  const tabela = document.getElementById("lista-pedidos");
+  tabela.innerHTML = "";
+
+  pedidos.forEach((pedido) => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${pedido.cliente}</td>
+        <td>${pedido.email}</td>
+        <td>${</script></body></html>d('senha-login').value;
+
+  if (email === 'cliente@teste.com' && senha === '12345') {
+    alert('Login bem-sucedido!');
+  } else {
+    alert('E-mail ou senha inválidos!');
+  }
+});
+
+// Função para carregar pedidos no painel administrativo
+async function carregarPedidos() {
+  const response = await fetch("http://localhost:5000/api/orders");
+  const pedidos = await response.json();
+
+  const tabela = document.getElementById("lista-pedidos");
+  tabela.innerHTML = "";
+
+  pedidos.forEach((pedido) => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${pedido.cliente}</td>
+        <td>${pedido.email}</td>
+        <td>${</script></body></html>
